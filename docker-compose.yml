@@ -9,9 +9,10 @@ services:
 
     environment:
       SCADS_API_KEY: ${SCADS_API_KEY}
+      RESEARCH_CLOUD_IP: ${RESEARCH_CLOUD_IP}
       OPENCLAW_GATEWAY_BIND: lan
       OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
 
     volumes:
-      - ./config:/opt/openclaw/config
-      - ./workspace:/opt/openclaw/workspace
+      - ./config:/home/node/.openclaw
+      - ./workspace:/home/node/.openclaw/workspace

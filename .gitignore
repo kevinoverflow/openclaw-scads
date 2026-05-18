@@ -1,3 +1,8 @@
 .env
 workspace/
 *.log
+config/devices/
+config/identity/
+config/plugin-skills/
+config/tasks/
+config/update-check.json
