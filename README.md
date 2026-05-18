@@ -178,12 +178,15 @@ Generate the gateway token with:
 openssl rand -hex 32
 ```
 
-Before starting Docker, make the mounted config and workspace writable by the
-container user:
+Before starting Docker, let both your VM user and the container user write the
+mounted config and workspace. This keeps ownership with your VM user while
+granting OpenClaw's container user access:
 
 ```bash
-sudo chown -R 1000:1000 config workspace
-chmod -R u+rwX config workspace
+sudo apt install -y acl
+sudo chown -R $(id -u):$(id -g) .
+sudo setfacl -R -m u:1000:rwX -m u:$(id -u):rwX config workspace
+sudo setfacl -R -d -m u:1000:rwX -m u:$(id -u):rwX config workspace
 ```
 
 Start OpenClaw:
@@ -284,8 +287,9 @@ to the default OpenAI model list.
 # Start OpenClaw
 
 ```bash
-sudo chown -R 1000:1000 config workspace
-chmod -R u+rwX config workspace
+sudo chown -R $(id -u):$(id -g) .
+sudo setfacl -R -m u:1000:rwX -m u:$(id -u):rwX config workspace
+sudo setfacl -R -d -m u:1000:rwX -m u:$(id -u):rwX config workspace
 docker compose up -d
 ```
 
@@ -461,8 +465,10 @@ Fix:
 
 ```bash
 cd ~/openclaw
-sudo chown -R 1000:1000 config workspace
-chmod -R u+rwX config workspace
+sudo apt install -y acl
+sudo chown -R $(id -u):$(id -g) .
+sudo setfacl -R -m u:1000:rwX -m u:$(id -u):rwX config workspace
+sudo setfacl -R -d -m u:1000:rwX -m u:$(id -u):rwX config workspace
 docker compose down
 docker compose up -d --force-recreate
 ```
