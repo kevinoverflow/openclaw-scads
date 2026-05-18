@@ -1,0 +1,153 @@
+{
+  "$schema": "https://openclaw.ai/schemas/config.json",
+
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "tud-scads/Qwen/Qwen3-Coder-30B-A3B-Instruct"
+      },
+
+      "models": {
+        "tud-scads/google/gemma-4-31B-it": {
+          "alias": "gemma-4-31b"
+        },
+
+        "tud-scads/meta-llama/Llama-3.1-8B-Instruct": {
+          "alias": "llama-3.1-8b"
+        },
+
+        "tud-scads/meta-llama/Llama-3.3-70B-Instruct": {
+          "alias": "llama-3.3-70b"
+        },
+
+        "tud-scads/MiniMaxAI/MiniMax-M2.5": {
+          "alias": "minimax-m2.5"
+        },
+
+        "tud-scads/moonshotai/Kimi-K2.6": {
+          "alias": "kimi-k2.6"
+        },
+
+        "tud-scads/openai/gpt-oss-120b": {
+          "alias": "gpt-oss-120b"
+        },
+
+        "tud-scads/openGPT-X/Teuken-7B-instruct-v0.6": {
+          "alias": "teuken-7b"
+        },
+
+        "tud-scads/Qwen/Qwen3-Coder-30B-A3B-Instruct": {
+          "alias": "qwen-coder-30b"
+        },
+
+        "tud-scads/Qwen/Qwen3-VL-8B-Instruct": {
+          "alias": "qwen3-vl-8b"
+        }
+      }
+    }
+  },
+
+  "models": {
+    "mode": "merge",
+
+    "providers": {
+      "tud-scads": {
+        "api": "openai-completions",
+
+        "baseUrl": "https://llm.scads.ai/v1",
+
+        "apiKey": "${SCADS_API_KEY}",
+
+        "timeoutSeconds": 300,
+
+        "models": [
+          {
+            "id": "google/gemma-4-31B-it",
+            "name": "Gemma 4 31B IT",
+            "contextWindow": 200704,
+            "maxTokens": 200704,
+            "input": ["text"]
+          },
+
+          {
+            "id": "meta-llama/Llama-3.1-8B-Instruct",
+            "name": "Llama 3.1 8B Instruct",
+            "contextWindow": 32768,
+            "maxTokens": 32768,
+            "input": ["text"]
+          },
+
+          {
+            "id": "meta-llama/Llama-3.3-70B-Instruct",
+            "name": "Llama 3.3 70B Instruct",
+            "contextWindow": 40000,
+            "maxTokens": 40000,
+            "input": ["text"]
+          },
+
+          {
+            "id": "MiniMaxAI/MiniMax-M2.5",
+            "name": "MiniMax M2.5",
+            "contextWindow": 196608,
+            "maxTokens": 196608,
+            "input": ["text"]
+          },
+
+          {
+            "id": "moonshotai/Kimi-K2.6",
+            "name": "Kimi K2.6",
+            "contextWindow": 262144,
+            "maxTokens": 262144,
+            "input": ["text"]
+          },
+
+          {
+            "id": "openai/gpt-oss-120b",
+            "name": "GPT OSS 120B",
+            "contextWindow": 131072,
+            "maxTokens": 131072,
+            "input": ["text"]
+          },
+
+          {
+            "id": "openGPT-X/Teuken-7B-instruct-v0.6",
+            "name": "Teuken 7B Instruct",
+            "contextWindow": 4096,
+            "maxTokens": 4096,
+            "input": ["text"]
+          },
+
+          {
+            "id": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+            "name": "Qwen3 Coder 30B A3B Instruct",
+            "contextWindow": 128000,
+            "maxTokens": 128000,
+            "input": ["text"]
+          },
+
+          {
+            "id": "Qwen/Qwen3-VL-8B-Instruct",
+            "name": "Qwen3 VL 8B Instruct",
+            "contextWindow": 131072,
+            "maxTokens": 131072,
+            "input": ["text", "image"]
+          }
+        ]
+      }
+    }
+  },
+
+  "gateway": {
+    "mode": "local",
+
+    "bind": "lan",
+
+    "controlUi": {
+      "allowedOrigins": [
+        "http://localhost:18789",
+        "http://127.0.0.1:18789",
+        "http://${RESEARCH_CLOUD_IP}:18789"
+      ]
+    }
+  }
+}

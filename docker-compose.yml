@@ -1,0 +1,17 @@
+services:
+  openclaw:
+    image: ghcr.io/openclaw/openclaw:latest
+    container_name: openclaw
+    restart: unless-stopped
+
+    ports:
+      - "${RESEARCH_CLOUD_IP}:18789:18789"
+
+    environment:
+      SCADS_API_KEY: ${SCADS_API_KEY}
+      OPENCLAW_GATEWAY_BIND: lan
+      OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
+
+    volumes:
+      - ./config:/opt/openclaw/config
+      - ./workspace:/opt/openclaw/workspace
