@@ -6,3 +6,7 @@ config/identity/
 config/plugin-skills/
 config/tasks/
 config/update-check.json
+himalaya/passwords/
+himalaya/*.secret
+gcalcli-config/
+gcalcli-data/
