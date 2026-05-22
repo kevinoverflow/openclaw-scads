@@ -137,6 +137,9 @@ docker compose version
 openclaw/
 ├── config/
 │   └── openclaw.json
+├── docs/
+│   ├── gcalcli.md
+│   └── himalaya.md
 ├── workspace/
 ├── docker-compose.yml
 ├── .env.example
@@ -178,15 +181,15 @@ Generate the gateway token with:
 openssl rand -hex 32
 ```
 
-Before starting Docker, let both your VM user and the container user write the
-mounted config and workspace. This keeps ownership with your VM user while
-granting OpenClaw's container user access:
+Before starting Docker, make the mounted runtime directories owned by the
+container user while keeping VM-user access through ACLs. This lets OpenClaw
+write runtime state and use its exec tool without blocking your `service` user:
 
 ```bash
 sudo apt install -y acl
-sudo chown -R $(id -u):$(id -g) .
-sudo setfacl -R -m u:1000:rwX -m u:$(id -u):rwX config workspace
-sudo setfacl -R -d -m u:1000:rwX -m u:$(id -u):rwX config workspace
+sudo chown -R 1000:1000 config workspace
+sudo setfacl -R -m u:$(id -u):rwX config workspace
+sudo setfacl -R -d -m u:$(id -u):rwX config workspace
 ```
 
 Start OpenClaw:
@@ -287,9 +290,9 @@ to the default OpenAI model list.
 # Start OpenClaw
 
 ```bash
-sudo chown -R $(id -u):$(id -g) .
-sudo setfacl -R -m u:1000:rwX -m u:$(id -u):rwX config workspace
-sudo setfacl -R -d -m u:1000:rwX -m u:$(id -u):rwX config workspace
+sudo chown -R 1000:1000 config workspace
+sudo setfacl -R -m u:$(id -u):rwX config workspace
+sudo setfacl -R -d -m u:$(id -u):rwX config workspace
 docker compose up -d
 ```
 
@@ -400,6 +403,15 @@ docker compose down
 
 ---
 
+# Optional Modules
+
+- [gcalcli Google Calendar CLI](docs/gcalcli.md): add Google Calendar access
+  inside the OpenClaw container.
+- [Himalaya email CLI](docs/himalaya.md): add IMAP/SMTP access for Gmail and
+  TU Dresden Exchange inside the OpenClaw container.
+
+---
+
 # Troubleshooting
 
 ## Cannot access UI
@@ -466,9 +478,9 @@ Fix:
 ```bash
 cd ~/openclaw
 sudo apt install -y acl
-sudo chown -R $(id -u):$(id -g) .
-sudo setfacl -R -m u:1000:rwX -m u:$(id -u):rwX config workspace
-sudo setfacl -R -d -m u:1000:rwX -m u:$(id -u):rwX config workspace
+sudo chown -R 1000:1000 config workspace
+sudo setfacl -R -m u:$(id -u):rwX config workspace
+sudo setfacl -R -d -m u:$(id -u):rwX config workspace
 docker compose down
 docker compose up -d --force-recreate
 ```
