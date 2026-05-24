@@ -1,6 +1,7 @@
 services:
   openclaw:
-    image: ghcr.io/openclaw/openclaw:latest
+    build: .
+    image: openclaw-himalaya:latest
     container_name: openclaw
     restart: unless-stopped
 
@@ -16,3 +17,6 @@ services:
     volumes:
       - ./config:/home/node/.openclaw
       - ./workspace:/home/node/.openclaw/workspace
+      - ./himalaya:/home/node/.config/himalaya
+      - ./gcalcli:/home/node/.config/gcalcli
+      - /home/service/tucloud/Documents/Wirtschaftsinformatik:/data
