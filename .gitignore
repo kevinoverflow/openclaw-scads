@@ -8,5 +8,7 @@ config/tasks/
 config/update-check.json
 himalaya/passwords/
 himalaya/*.secret
-gcalcli-config/
+gcalcli/
 gcalcli-data/
+# legacy names
+gcalcli-config/

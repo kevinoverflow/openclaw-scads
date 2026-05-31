@@ -19,4 +19,5 @@ services:
       - ./workspace:/home/node/.openclaw/workspace
       - ./himalaya:/home/node/.config/himalaya
       - ./gcalcli:/home/node/.config/gcalcli
+      - ./gcalcli-data:/home/node/.local/share/gcalcli
       - /home/service/tucloud/Documents/Wirtschaftsinformatik:/data
