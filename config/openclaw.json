@@ -149,5 +149,18 @@
         "http://${RESEARCH_CLOUD_IP}:18789"
       ]
     }
+  },
+
+  "plugins": {
+    "entries": {
+      "discord": {
+        "enabled": true,
+        "channelConfig": {
+          "discord": {
+            "token": "${DISCORD_BOT_TOKEN}"
+          }
+        }
+      }
+    }
   }
 }

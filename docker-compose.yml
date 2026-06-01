@@ -13,6 +13,7 @@ services:
       RESEARCH_CLOUD_IP: ${RESEARCH_CLOUD_IP}
       OPENCLAW_GATEWAY_BIND: lan
       OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
 
     volumes:
       - ./config:/home/node/.openclaw
