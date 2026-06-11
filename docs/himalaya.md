@@ -1,13 +1,11 @@
 # Himalaya Email CLI Module
 
-This optional module installs the Himalaya email CLI inside the OpenClaw Docker
-container and mounts a separate email configuration directory.
+This optional module installs the Himalaya email CLI inside the OpenClaw Docker container and mounts a separate email configuration directory.
 
-It covers three accounts:
+It covers two account types:
 
-- `kevin.hoang@mailbox.tu-dresden.de`
-- `binxkevin@gmail.com`
-- `kevin.hoang524@gmail.com`
+* TU Dresden Exchange / mailbox account
+* Gmail account
 
 ## Docker Image
 
@@ -65,7 +63,7 @@ Paste this template:
 
 ```toml
 [accounts.tud]
-email = "kevin.hoang@mailbox.tu-dresden.de"
+email = "YOUR_TUD_EMAIL"
 
 folder.aliases.inbox = "INBOX"
 folder.aliases.sent = "Sent Items"
@@ -89,34 +87,9 @@ message.send.backend.auth.type = "password"
 message.send.backend.auth.cmd = "cat /home/node/.config/himalaya/passwords/tud"
 
 
-[accounts.gmail-binx]
-email = "binxkevin@gmail.com"
-
-folder.aliases.inbox = "INBOX"
-folder.aliases.sent = "[Gmail]/Sent Mail"
-folder.aliases.drafts = "[Gmail]/Drafts"
-folder.aliases.trash = "[Gmail]/Trash"
-
-backend.type = "imap"
-backend.host = "imap.gmail.com"
-backend.port = 993
-backend.encryption.type = "tls"
-backend.login = "binxkevin@gmail.com"
-backend.auth.type = "password"
-backend.auth.cmd = "cat /home/node/.config/himalaya/passwords/gmail-binx"
-
-message.send.backend.type = "smtp"
-message.send.backend.host = "smtp.gmail.com"
-message.send.backend.port = 465
-message.send.backend.encryption.type = "tls"
-message.send.backend.login = "binxkevin@gmail.com"
-message.send.backend.auth.type = "password"
-message.send.backend.auth.cmd = "cat /home/node/.config/himalaya/passwords/gmail-binx"
-
-
-[accounts.gmail-kevin]
+[accounts.gmail]
 default = true
-email = "kevin.hoang524@gmail.com"
+email = "YOUR_GMAIL_ADDRESS"
 
 folder.aliases.inbox = "INBOX"
 folder.aliases.sent = "[Gmail]/Sent Mail"
@@ -127,20 +100,24 @@ backend.type = "imap"
 backend.host = "imap.gmail.com"
 backend.port = 993
 backend.encryption.type = "tls"
-backend.login = "kevin.hoang524@gmail.com"
+backend.login = "YOUR_GMAIL_ADDRESS"
 backend.auth.type = "password"
-backend.auth.cmd = "cat /home/node/.config/himalaya/passwords/gmail-kevin"
+backend.auth.cmd = "cat /home/node/.config/himalaya/passwords/gmail"
 
 message.send.backend.type = "smtp"
 message.send.backend.host = "smtp.gmail.com"
 message.send.backend.port = 465
 message.send.backend.encryption.type = "tls"
-message.send.backend.login = "kevin.hoang524@gmail.com"
+message.send.backend.login = "YOUR_GMAIL_ADDRESS"
 message.send.backend.auth.type = "password"
-message.send.backend.auth.cmd = "cat /home/node/.config/himalaya/passwords/gmail-kevin"
+message.send.backend.auth.cmd = "cat /home/node/.config/himalaya/passwords/gmail"
 ```
 
-Replace `YOUR_ZIH_LOGIN` with your ZIH login.
+Replace:
+
+* `YOUR_TUD_EMAIL` with your TU Dresden mailbox address
+* `YOUR_ZIH_LOGIN` with your ZIH login
+* `YOUR_GMAIL_ADDRESS` with your Gmail address
 
 ## Password Files
 
@@ -148,18 +125,16 @@ Create one password file per account:
 
 ```bash
 nano himalaya/passwords/tud
-nano himalaya/passwords/gmail-binx
-nano himalaya/passwords/gmail-kevin
+nano himalaya/passwords/gmail
 ```
 
-For Gmail, use Google app passwords, not your normal Google passwords.
+For Gmail, use a Google app password, not your normal Google password.
 
-Keep these files out of Git. They are ignored by `.gitignore`.
+Keep these files out of Git. They should be ignored by `.gitignore`.
 
 ## Permissions
 
-OpenClaw needs to own mounted runtime directories so its exec tool can `chmod`
-them. The VM user still gets access through ACLs.
+OpenClaw needs to own mounted runtime directories so its exec tool can `chmod` them. The VM user still gets access through ACLs.
 
 ```bash
 cd ~/openclaw
@@ -169,8 +144,7 @@ sudo setfacl -R -m u:$(id -u):rwX config workspace himalaya
 sudo setfacl -R -d -m u:$(id -u):rwX config workspace himalaya
 ```
 
-If you keep password files mode-restricted, also grant the container user read
-access:
+If you keep password files mode-restricted, also grant the container user read access:
 
 ```bash
 chmod 640 himalaya/passwords/*
@@ -209,8 +183,7 @@ docker compose exec openclaw himalaya account list
 List inbox messages:
 
 ```bash
-docker compose exec openclaw himalaya envelope list --account gmail-kevin --folder INBOX
-docker compose exec openclaw himalaya envelope list --account gmail-binx --folder INBOX
+docker compose exec openclaw himalaya envelope list --account gmail --folder INBOX
 docker compose exec openclaw himalaya envelope list --account tud --folder INBOX
 ```
 
@@ -238,8 +211,7 @@ sudo setfacl -R -m u:$(id -u):rwX himalaya
 sudo setfacl -R -d -m u:$(id -u):rwX himalaya
 ```
 
-If OpenClaw says `exec` is blocked with `EPERM`, reapply ownership for all
-mounted runtime directories:
+If OpenClaw says `exec` is blocked with `EPERM`, reapply ownership for all mounted runtime directories:
 
 ```bash
 sudo chown -R 1000:1000 config workspace himalaya
